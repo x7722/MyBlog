@@ -14,10 +14,6 @@
     <name>my_blog</name>
     <description>This my first Blog</description>
 
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
-
     <dependencies>
         <!--模版引擎-->
         <dependency>
