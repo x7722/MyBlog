@@ -1,0 +1,30 @@
+# 设置端口号
+server:
+  port: 9999
+# 关闭模版引擎的缓存
+spring:
+  thymeleaf:
+    cache: false
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/my_blog_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+
+  main:
+    allow-bean-definition-overriding: true #如果有相同的Bean，会覆盖
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update # 如果实体类对应表不存在，就自动创建表。
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect # 数据库方言
+        format_sql: true # 格式化SQL语句
+    show-sql: true # 打印SQL语句
+
+
+
+# mybatis config
+#mybatis.mapper-locations=classpath:mapper/*Mapper.xml
