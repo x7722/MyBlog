@@ -1,103 +1,422 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<header th:replace="admin/header::header-fragment"></header>
-<body class="hold-transition sidebar-mini">
-<style>
-    .ui-jqgrid tr.jqgrow td {
-        white-space: normal !important;
-        height: auto;
-        vertical-align: text-top;
-        padding-top: 2px;
-    }
-</style>
-<div class="wrapper">
-    <!-- 引入页面头header-fragment -->
-    <div th:replace="admin/header::header-nav"></div>
-    <!-- 引入工具栏sidebar-fragment -->
-    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- Main content -->
-        <div class="content">
-            <div class="container-fluid">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">评论管理</h3>
-                    </div> <!-- /.card-body -->
-                    <div class="card-body">
-                        <div class="grid-btn">
-                            <button class="btn btn-success" onclick="checkDoneComments()"><i
-                                    class="fa fa-check"></i>&nbsp;批量审核
-                            </button>
-                            <button class="btn btn-info" onclick="reply()"><i
-                                    class="fa fa-reply"></i>&nbsp;回复
-                            </button>
-                            <button class="btn btn-danger" onclick="deleteComments()"><i
-                                    class="fa fa-trash-o"></i>&nbsp;批量删除
-                            </button>
-                        </div>
-                        <!-- JqGrid必要DOM,用于创建表格展示列表数据 -->
-                        <table id="jqGrid" class="table table-bordered"></table>
-                        <!-- JqGrid必要DOM,分页信息区域 -->
-                        <div id="jqGridPager"></div>
-                    </div><!-- /.card-body -->
-                </div>
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content -->
-        <div class="content">
-            <!-- 模态框（Modal） -->
-            <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="replyModalLabel">评论回复</h6>
-                        </div>
-                        <div class="modal-body">
-                            <form id="replyForm">
-                                <input type="hidden" class="form-control" id="categoryId" name="categoryId">
-                                <div class="form-group">
-                                    <label for="replyBody" class="control-label">回复内容:</label>
-                                    <textarea type="text" class="form-control" id="replyBody" name="replyBody"
-                                              placeholder="请输入回复内容" required="true"></textarea>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" id="saveButton">确认</button>
-                        </div>
-                    </div>
-                </div>
+<html xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/my.css">
+    <title>后台管理</title>
+</head>
+<body>
+<div id="app">
+    <el-container style="height: 60px;">
+        <!--LOGO-->
+        <el-image style="width: 200px; height: 60px;" src="/img/logo.jpg"></el-image>
+        <!--状态栏-->
+        <el-main style="background-color: #ffcccc">
+
+
+            哈哈哈哈哈哈欢迎👏
+
+            <el-link style="float: right" href="https://element.eleme.io" target="_blank" :underline="false">
+                <i class="el-icon-s-promotion"></i>博客首页
+            </el-link>
+
+            <el-dropdown style="float: right;">
+                <span class="el-dropdown-link" style="margin-right: 30px;"><i class="el-icon-s-custom"
+                                                                              style="margin-right: 10px;"></i>鼎</span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item disabled>昵称：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;鼎</el-dropdown-item>
+                    <el-dropdown-item disabled>账号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MonsterXu</el-dropdown-item>
+                    <el-dropdown-item disabled>上次登录：&nbsp;&nbsp;&nbsp;2020-07-19 17:00:29</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-main>
+    </el-container>
+
+    <!--中间-->
+    <el-container style="height: 765px; border: 1px solid #eee;">
+        <!--导航栏-->
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <el-menu
+                    :default-openeds="['1','2','3']"
+                    class="links">
+                <!--分类标题-->
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-stopwatch"></i>仪表盘</template>
+                    <el-menu-item-group>
+                        <a href="/admin">
+                            <el-menu-item index="1-1"><i class="el-icon-stopwatch"></i>仪表盘</el-menu-item>
+                        </a>
+                        <a href="/admin/blog/showAddBlog">
+                            <el-menu-item index="1-2"><i class="el-icon-edit-outline"></i>发布博客</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+
+                <el-submenu index="2">
+                    <template slot="title"><i class="el-icon-menu"></i>管理模块</template>
+                    <el-menu-item-group>
+                        <a href="/admin/blog">
+                            <el-menu-item index="2-1"><i class="el-icon-notebook-1"></i>博客管理</el-menu-item>
+                        </a>
+                        <a href="/admin/comment">
+                            <el-menu-item index="2-2"><i class="el-icon-chat-line-round"></i>评论管理</el-menu-item>
+                        </a>
+                        <a href="/admin/category">
+                            <el-menu-item index="2-3"><i class="el-icon-collection-tag"></i>分类管理</el-menu-item>
+                        </a>
+                        <a href="/admin/tags">
+                            <el-menu-item index="2-4"><i class="el-icon-price-tag"></i>标签管理</el-menu-item>
+                        </a>
+                        <a href="/admin/link">
+                            <el-menu-item index="2-5"><i class="el-icon-link"></i>友情链接</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+
+                <el-submenu index="3">
+                    <template slot="title"><i class="el-icon-s-tools"></i>系统管理</template>
+                    <el-menu-item-group>
+                        <a href="/admin/system">
+                            <el-menu-item index="3-1"><i class="el-icon-setting"></i>系统配置</el-menu-item>
+                        </a>
+                        <a href="/admin/user">
+                            <el-menu-item index="3-2"><i class="el-icon-user"></i>修改密码</el-menu-item>
+                        </a>
+                        <a href="/admin/exit">
+                            <el-menu-item index="3-3"><i class="el-icon-switch-button"></i>安全退出</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+
+        <el-container>
+            <el-header
+                    style="width: 100%; background-color: #ffd6d6; height: 40px; line-height: 40px; font-size: 16px;">
+                <b>后台管理中心</b>
+            </el-header>
+
+            <!--内容展示-->
+            <div>
+                <el-main>
+                    <template>
+                        <el-button size="small" type="primary" round @click="addTag()">批量审核</el-button>
+                    </template>
+
+                    <template>
+
+                        <el-table style=" width: 100%" :data="comments">
+
+                            <el-table-column
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+
+                            <el-table-column prop="commentId" label="序号" width="80">
+                            </el-table-column>
+
+                            <el-table-column prop="commentBody" label="评论内容" width="230">
+                            </el-table-column>
+
+                            <el-table-column prop="commentCreateTime" label="评论时间" width="120">
+                            </el-table-column>
+
+                            <el-table-column prop="commentator" label="评论人名称" width="120">
+                            </el-table-column>
+
+                            <el-table-column prop="email" label="评论邮箱" width="160">
+                            </el-table-column>
+
+                            <el-table-column prop="commentStatus" label="状态" width="80">
+                                <template slot-scope="scope">
+                                    <el-button type="primary" v-if="scope.row.commentStatus==1" size="mini"
+                                               @click="checkOffStatus(scope.row)">已审核
+                                    </el-button>
+                                    <el-button type="info" v-if="scope.row.commentStatus==0" size="mini"
+                                               @click="checkOnStatus(scope.row)">未审核
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column prop="replyBody" label="回复内容" width="160">
+                            </el-table-column>
+
+                            <el-table-column prop="isDeleted" label="操作">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" type="danger" @click="deleteComment(scope.row)">删除
+                                    </el-button>
+
+                                    <el-button size="mini" type="info" @click="replyComment(scope.row)">回复
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-main>
             </div>
-            <!-- /.modal -->
-        </div>
-    </div>
-    <!-- /.content-wrapper -->
-    <!-- 引入页脚footer-fragment -->
-    <div th:replace="admin/footer::footer-fragment"></div>
+
+
+            <!--分页条，一页显示11个最好-->
+            <div align="center">
+                <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        @current-change="handleCurrentChange"
+                        :total="pagination.total"
+                        :page-size="pagination.pageSize"
+                        :current-page.sync="pagination.currentPage">
+                </el-pagination>
+            </div>
+
+        </el-container>
+
+
+    </el-container>
+    <!--底部-->
+    <el-container>
+        <el-footer style="height:25px; line-height: 25px; text-align: center; font-size: 9px;">
+            Copyright © 2020 MonsterXU All rights reserved. <i>京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号
+            京网文[2020]0276-042号</i>
+        </el-footer>
+    </el-container>
 </div>
-<!-- jQuery -->
-<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
-<!-- Bootstrap 4 -->
-<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<!-- AdminLTE App -->
-<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
-<!-- jquery App -->
-<script th:src="@{/admin/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>
-<script th:src="@{/admin/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>
-<!-- sweetalert -->
-<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
-<script th:src="@{/admin/dist/js/public.js}"></script>
-<script th:src="@{/admin/dist/js/comment.js}"></script>
 </body>
+<!-- import Vue and Element -->
+<script src="/js/vue.js"></script>
+<script src="/js/ElementUI-index.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/axios.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            comments = [[${comments}]];
+            console.log(comments);
+
+            //分页相关属性
+            pagination = {
+                currentPage: 1,
+                pageSize: 10,
+                total: 0,
+            };
+
+            return {
+                comments,
+                pagination
+            };
+        },
+        //钩子函数
+        created() {
+            this.findPage();
+        },
+        methods: {
+            //回复评论
+            replyComment(comment) {
+                this.$prompt('请输回复内容', '回复评论', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({value}) => {
+                    //发送请求，添加标签
+                    axios.post("/admin/comment/reply/" + comment.commentId, {"replyBody":value}).then((res) => {
+                        // console.log(res);
+                        if (res.data.flag) {
+                            //添加成功
+                            this.$message({
+                                type: 'success',
+                                message: '回复消息成功！'
+                            });
+                        }
+                        //修改成功之后重新调用分页查询
+                        this.findPage();
+                    }).catch((err) => {
+                        //打印错误信息
+                        console.log(err);
+                        //添加失败
+                        this.$message({
+                            type: 'error',
+                            message: '添加失败，请检查标签是否重复或者网络是否有问题'
+                        });
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消添加'
+                    });
+                });
+
+            },
+            //修改标签
+            editTag(comment) {
+
+                this.$prompt('请输标签名称', '修改标签', {
+                    inputValue: tag.tagName,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({value}) => {
+                    //发送请求，添加标签
+                    axios.put("/admin/tags/update/" + tag.tagId + "/" + value,).then(res => {
+
+                        console.log(res);
+                        console.log("id是：" + tag.tagId + "   名称是：" + value + "  修改之后的名称是：" + value);
+                        //判断是否修改成功
+                        if (res.data.flag) {
+                            this.$message({
+                                type: 'success',
+                                message: '修改标签成功，修改后的标签名称是： ' + value
+                            });
+
+                            //修改成功之后重新调用分页查询
+                            this.findPage();
+
+                        }
+
+                    }).catch(err => {
+                        //修改失败
+                        this.$message({
+                            type: 'error',
+                            message: '标签修改失败'
+                        });
+                    })
+
+                    //取消修改
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消修改'
+                    });
+                });
+
+            },
+            //审核通过
+            checkOnStatus(comment) {
+                this.$confirm('是否通过审核?', '取消审核', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'info'
+                }).then(() => {
+                    //发送请求审核通过评论
+                    axios.put("/admin/comment/recover/" + comment.commentId).then((res) => {
+                        if (res.data.flag) {
+                            //恢复成功
+                            this.$message({
+                                type: 'success',
+                                message: '审核通过'
+                            });
+                            this.findPage();
+                        }
+
+                    }).catch((err) => {
+                        console.log("审核失败： " + err);
+                        //删除失败
+                        this.$message({
+                            type: 'error',
+                            message: '审核失败'
+                        });
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消审核'
+                    });
+                });
+
+            },
+            //取消审核
+            checkOffStatus(comment) {
+                this.$confirm('是否取消审核?', '取消审核', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //发送请求停用标签
+                    axios.put("/admin/comment/stop/" + comment.commentId).then((res) => {
+
+                        if (res.data.flag) {
+                            //停用成功
+                            this.$message({
+                                type: 'success',
+                                message: '停用成功'
+                            });
+                            this.findPage();
+                        }
+
+                    }).catch((err) => {
+                        //停用失败
+                        this.$message({
+                            type: 'error',
+                            message: '停用失败'
+                        });
+                    });
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消停用'
+                    });
+                });
+            },
+            //删除消息回复
+            deleteComment(comment) {
+                this.$confirm('是否删除该评论?', '删除评论', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'danger'
+                }).then(() => {
+                    //发送请求删除标签
+                    axios.delete("/admin/comment/delete/" + comment.commentId).then((res) => {
+                        if (res.data.flag) {
+                            //删除成功
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功'
+                            });
+                            this.findPage();
+                        }
+                    }).catch((err) => {
+                        console.log("删除评论失败： " + err);
+                        //删除失败
+                        this.$message({
+                            type: 'error',
+                            message: '删除失败'
+                        });
+                    });
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });
+                });
+            },
+            //分页查询
+            findPage() {
+                //封装分页参数
+                var currentPage = this.pagination.currentPage - 1;
+                var pageSize = this.pagination.pageSize;
+
+                console.log("currentPage:" + currentPage + "---------- currentPage" + currentPage);
+
+                //发送ajax请求，提交分页相关参数
+                axios.get("/admin/comment/findPage/" + currentPage + "/" + pageSize).then((res) => {
+
+                    //console.log(res);
+
+                    //为VUE对象的模型数据赋值，基于双向数据绑定展示到页面
+                    this.comments = res.data.rows;//当前页展示的数据集合
+                    this.pagination.total = res.data.total;//总数据量
+                });
+            },
+            //切换页码
+            handleCurrentChange(val) {
+                console.log(val);
+                //为模型数据赋值（当前页面）
+                this.pagination.currentPage = val;
+                this.findPage();
+            }
+
+        }
+    });
+</script>
+
 </html>

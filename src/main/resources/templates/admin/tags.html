@@ -13,10 +13,7 @@
         <el-image style="width: 200px; height: 60px;" src="/img/logo.jpg"></el-image>
         <!--状态栏-->
         <el-main style="background-color: #ffcccc">
-
-
             哈哈哈哈哈哈欢迎👏
-
             <el-link style="float: right" href="https://element.eleme.io" target="_blank" :underline="false">
                 <i class="el-icon-s-promotion"></i>博客首页
             </el-link>
@@ -77,15 +74,9 @@
                 <el-submenu index="3">
                     <template slot="title"><i class="el-icon-s-tools"></i>系统管理</template>
                     <el-menu-item-group>
-                        <a href="/admin/system">
-                            <el-menu-item index="3-1"><i class="el-icon-setting"></i>系统配置</el-menu-item>
-                        </a>
-                        <a href="/admin/user">
-                            <el-menu-item index="3-2"><i class="el-icon-user"></i>修改密码</el-menu-item>
-                        </a>
-                        <a th:href="@{/logout}">
-                            <el-menu-item index="3-3"><i class="el-icon-switch-button"></i>安全退出</el-menu-item>
-                        </a>
+                        <a href="/admin/system"><el-menu-item index="3-1"><i class="el-icon-setting"></i>系统配置</el-menu-item></a>
+                        <a href="/admin/user"><el-menu-item index="3-2"><i class="el-icon-user"></i>修改密码</el-menu-item></a>
+                        <a href="/admin/exit"><el-menu-item index="3-3"><i class="el-icon-switch-button"></i>安全退出</el-menu-item></a>
                     </el-menu-item-group>
                 </el-submenu>
             </el-menu>
@@ -94,71 +85,55 @@
         <el-container>
             <el-header
                     style="width: 100%; background-color: #ffd6d6; height: 40px; line-height: 40px; font-size: 16px;">
-                <b>文章管理</b>
+                <b>标签管理</b>
             </el-header>
 
             <!--内容展示-->
             <div>
                 <el-main>
                     <template>
-                        <el-button size="small" type="primary"  onclick="location='/admin/edit'">新增</el-button>
+                        <el-button size="small" type="primary" round @click="addTag()">添加标签</el-button>
                     </template>
 
                     <template>
-                        <el-table style=" width: 100%" :data="blogs">
+                        <el-table style=" width: 100%" :data="tags">
 
-                            <el-table-column
-                                    type="selection"
-                                    width="55">
+                            <el-table-column prop="tagId" label="序号" width="230">
+                                <!--<template slot-scope="scope">-->
+                                <!--<span style="margin-left: 10px">{{ tag.tagId }}</span>-->
+                                <!--</template>-->
                             </el-table-column>
 
-                            <el-table-column prop="blogTitle" label="标题" width="200">
+                            <el-table-column prop="tagName" label="标签名称" width="330">
+                                <!--<template slot-scope="scope">-->
+                                <!--<span style="margin-left: 10px">{{ tag.tagName }}</span>-->
+                                <!--</template>-->
                             </el-table-column>
 
-                            <el-table-column prop="blogCoverImage" label="预览图" width="150">
-                                <template slot-scope="scope">
-                                    <el-image style="width: 70px;"
-                                              :src="scope.row.blogCoverImage"
-                                              >
-                                    </el-image>
-                                </template>
-                            </el-table-column>
-
-                            <el-table-column prop="blogViews" label="浏览量" width="70">
-                            </el-table-column>
-
-                            <el-table-column prop="blogStatus" label="文章状态" width="80">
-                                <template slot-scope="scope">
-                                    <el-button  type="success" v-if="scope.row.blogStatus==1" size="mini"
-                                               @click="checkOffStatus(scope.row)">已发布
-                                    </el-button>
-                                    <el-button  type="warning" v-if="scope.row.blogStatus==0" size="mini"
-                                               @click="checkOnStatus(scope.row)">未发布
-                                    </el-button>
-                                </template>
-                            </el-table-column>
-
-                            <el-table-column prop="blogCategoryName" label="博客分类" width="120">
-                            </el-table-column>
-
-                            <el-table-column prop="createTime" label="添加时间" width="155">
+                            <el-table-column prop="createTime" label="添加时间" width="330">
+                                <!--<template slot-scope="scope">-->
+                                <!--<i class="el-icon-time"></i>-->
+                                <!--<span style="margin-left: 10px">{{ tag.createTime }}</span>-->
+                                <!--</template>-->
                             </el-table-column>
 
                             <el-table-column prop="isDeleted" label="操作">
                                 <template slot-scope="scope">
-                                    <el-button size="mini" type="primary"  @click="editBlog(scope.row)">修改
+                                    <el-button size="mini" @click="editTag(scope.row)">编辑
                                     </el-button>
 
+
                                     <el-button v-if="scope.row.isDeleted==0" size="mini" type="warning"
-                                               @click="stopBlog(scope.row)">停用
+                                               @click="stopTag(scope.row)">停用
                                     </el-button>
 
                                     <el-button v-else-if="scope.row.isDeleted==1" size="mini" type="info"
-                                               @click="recoverBlog(scope.row)">恢复
+                                               @click="recoverTag(scope.row)">恢复
                                     </el-button>
 
-                                    <el-button size="mini" type="danger"  @click="deleteBlog(scope.row)">删除
+                                    <el-button size="mini" type="danger" @click="deleteTag(scope.row)">删除
                                     </el-button>
+
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -177,8 +152,9 @@
                         :current-page.sync="pagination.currentPage">
                 </el-pagination>
             </div>
-
         </el-container>
+
+
     </el-container>
     <!--底部-->
     <el-container>
@@ -198,40 +174,52 @@
     new Vue({
         el: '#app',
         data() {
-            blogs = [[${blogs}]];
-            console.log(blogs);
+            tags = [[${tags}]];
+            console.log(tags);
 
             //分页相关属性
             pagination = {
                 currentPage: 1,
-                pageSize: 6,
+                pageSize: 10,
                 total: 0,
             };
 
             return {
-                blogs,
+                tags,
                 pagination
             };
         },
         //钩子函数
         created() {
+
+            // //发送请求查询所有的标签
+            // axios.get("/admin/tags/list").then(res => {
+            //     //查询所有标签
+            //
+            // }).catch(err => {
+            //     alert("查询失败")
+            // });
+
             this.findPage();
         },
         methods: {
-            //回复评论
-            replyComment(blogs) {
-                this.$prompt('请输回复内容', '回复评论', {
+            //添加标签
+            addTag() {
+                this.$prompt('请输标签名称', '添加标签', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({value}) => {
+
                     //发送请求，添加标签
-                    axios.post("/admin/comment/reply/" + comment.commentId, {"replyBody":value}).then((res) => {
-                        // console.log(res);
+                    axios.post("/admin/tags/add", {"tagName": value}).then((res) => {
+
+                        console.log(res);
+
                         if (res.data.flag) {
                             //添加成功
                             this.$message({
                                 type: 'success',
-                                message: '回复消息成功！'
+                                message: '添加标签：    ' + value + '  成功！'
                             });
                         }
                         //修改成功之后重新调用分页查询
@@ -254,59 +242,97 @@
 
             },
             //修改标签
-            editBlog(blogs) {
-                //吧要修改之后的id发送到后台
-                window.location.href='/admin/blog/findById/'+blogs.blogId;
+            editTag(tag) {
+
+                this.$prompt('请输标签名称', '修改标签', {
+                    inputValue: tag.tagName,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({value}) => {
+                    //发送请求，添加标签
+                    axios.put("/admin/tags/update/" + tag.tagId + "/" + value,).then(res => {
+
+                        console.log(res);
+                        console.log("id是：" + tag.tagId + "   名称是：" + value + "  修改之后的名称是：" + value);
+                        //判断是否修改成功
+                        if (res.data.flag) {
+                            this.$message({
+                                type: 'success',
+                                message: '修改标签成功，修改后的标签名称是： ' + value
+                            });
+
+                            //修改成功之后重新调用分页查询
+                            this.findPage();
+
+                        }
+
+                    }).catch(err => {
+                        //修改失败
+                        this.$message({
+                            type: 'error',
+                            message: '标签修改失败'
+                        });
+                    })
+
+                    //取消修改
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消修改'
+                    });
+                });
+
             },
-            //发布文章
-            checkOnStatus(blogs) {
-                this.$confirm('是否发布文章?', '文章发布', {
+            //恢复标签
+            recoverTag(tag) {
+                this.$confirm('是否恢复该标签?', '恢复标签', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'info'
                 }).then(() => {
-                    //发送请求审核通过评论
-                    axios.put("/admin/blog/push/" + blogs.blogId).then((res) => {
+                    //发送请求删除标签
+                    axios.delete("/admin/tags/recover/" + tag.tagId).then((res) => {
+
                         if (res.data.flag) {
                             //恢复成功
                             this.$message({
                                 type: 'success',
-                                message: '文章发布成功'
+                                message: '恢复成功'
                             });
                             this.findPage();
                         }
 
                     }).catch((err) => {
-                        // console.log("文章发布失败： " + err);
+                        console.log("恢复标签失败： " + err);
                         //删除失败
                         this.$message({
                             type: 'error',
-                            message: '文章发布失败'
+                            message: '恢复失败'
                         });
                     });
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '取消操作'
+                        message: '取消恢复'
                     });
                 });
 
             },
-            //关闭文章
-            checkOffStatus(blogs) {
-                this.$confirm('是否关闭文章?', '关闭文章', {
+            //停用标签
+            stopTag(tag) {
+                this.$confirm('是否停用该标签?', '停用标签', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     //发送请求停用标签
-                    axios.put("/admin/blog/stop/" + blogs.blogId).then((res) => {
+                    axios.delete("/admin/tags/stop/" + tag.tagId).then((res) => {
 
                         if (res.data.flag) {
                             //停用成功
                             this.$message({
                                 type: 'success',
-                                message: '文章关闭成功'
+                                message: '停用成功'
                             });
                             this.findPage();
                         }
@@ -315,26 +341,27 @@
                         //停用失败
                         this.$message({
                             type: 'error',
-                            message: '文章关闭成功'
+                            message: '停用失败'
                         });
                     });
 
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '取消操作'
+                        message: '取消停用'
                     });
                 });
             },
-            //删除文章
-            deleteBlog(blogs) {
-                this.$confirm('是否删除该文章?', '删除文章', {
+            //删除标签
+            deleteTag(tag) {
+                this.$confirm('是否删除该标签?', '删除标签', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'danger'
                 }).then(() => {
                     //发送请求删除标签
-                    axios.delete("/admin/blog/delete/" + blogs.blogId).then((res) => {
+                    axios.delete("/admin/tags/delete/" + tag.tagId).then((res) => {
+
                         if (res.data.flag) {
                             //删除成功
                             this.$message({
@@ -343,8 +370,9 @@
                             });
                             this.findPage();
                         }
+
                     }).catch((err) => {
-                        // console.log("删除文章失败： " + err);
+                        console.log("删除标签失败： " + err);
                         //删除失败
                         this.$message({
                             type: 'error',
@@ -355,76 +383,7 @@
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '取消操作'
-                    });
-                });
-            },
-            //恢复文章
-            recoverBlog(blogs) {
-                this.$confirm('是否恢复该文章?', '恢复文章', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'info'
-                }).then(() => {
-                    //发送请求删除标签
-                    axios.put("/admin/blog/recover/" + blogs.blogId).then((res) => {
-
-                        if (res.data.flag) {
-                            //恢复成功
-                            this.$message({
-                                type: 'success',
-                                message: '恢复文章成功'
-                            });
-                            this.findPage();
-                        }
-
-                    }).catch((err) => {
-                        // console.log("恢复文章失败： " + err);
-                        //删除失败
-                        this.$message({
-                            type: 'error',
-                            message: '恢复文章失败'
-                        });
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消操作'
-                    });
-                });
-
-            },
-            //逻辑删除文章
-            stopBlog(blogs) {
-                this.$confirm('是否逻辑删除该文章?', '逻辑删除文章', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    //发送请求停用标签
-                    axios.put("/admin/blog/isDelete/" + blogs.blogId).then((res) => {
-
-                        if (res.data.flag) {
-                            //停用成功
-                            this.$message({
-                                type: 'success',
-                                message: '停用文章成功'
-                            });
-                            this.findPage();
-                        }
-
-                    }).catch((err) => {
-                        //停用失败
-                        this.$message({
-                            type: 'error',
-                            message: '停用文章失败'
-                        });
-                    });
-
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消操作'
+                        message: '取消删除'
                     });
                 });
             },
@@ -437,12 +396,12 @@
                 console.log("currentPage:" + currentPage + "---------- currentPage" + currentPage);
 
                 //发送ajax请求，提交分页相关参数
-                axios.get("/admin/blog/findPage/" + currentPage + "/" + pageSize).then((res) => {
+                axios.get("/admin/tags/findPage/" + currentPage + "/" + pageSize).then((res) => {
 
-                    //console.log(res);
+                    // console.log(res);
 
                     //为VUE对象的模型数据赋值，基于双向数据绑定展示到页面
-                    this.blogs = res.data.rows;//当前页展示的数据集合
+                    this.tags = res.data.rows;//当前页展示的数据集合
                     this.pagination.total = res.data.total;//总数据量
                 });
             },

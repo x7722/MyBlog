@@ -1,129 +1,527 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<header th:replace="admin/header::header-fragment"></header>
-<body class="hold-transition sidebar-mini">
-<style>
-    .ui-jqgrid tr.jqgrow td {
-        white-space: normal !important;
-        height: auto;
-        vertical-align: text-top;
-        padding-top: 2px;
-    }
-</style>
-<div class="wrapper">
-    <!-- 引入页面头header-fragment -->
-    <div th:replace="admin/header::header-nav"></div>
-    <!-- 引入工具栏sidebar-fragment -->
-    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- Main content -->
-        <div class="content">
-            <div class="container-fluid">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">友情链接管理</h3>
-                    </div> <!-- /.card-body -->
-                    <div class="card-body">
-                        <div class="grid-btn">
-                            <button class="btn btn-info" onclick="linkAdd()"><i
-                                    class="fa fa-plus"></i>&nbsp;新增
-                            </button>
-                            <button class="btn btn-info" onclick="linkEdit()"><i
-                                    class="fa fa-pencil-square-o"></i>&nbsp;修改
-                            </button>
-                            <button class="btn btn-danger" onclick="deleteLink()"><i
-                                    class="fa fa-trash-o"></i>&nbsp;删除
-                            </button>
-                        </div>
-                        <table id="jqGrid" class="table table-bordered">
-                        </table>
-                        <div id="jqGridPager"></div>
-                    </div><!-- /.card-body -->
-                </div>
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content -->
-        <div class="content">
-            <!-- 模态框（Modal） -->
-            <div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="linkModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="linkModalLabel">Modal</h6>
-                        </div>
-                        <div class="modal-body">
-                            <form id="linkForm">
-                                <div class="form-group">
-                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
-                                        错误信息展示栏。
-                                    </div>
-                                </div>
-                                <input type="hidden" class="form-control" id="linkId" name="linkId">
-                                <div class="form-group">
-                                    <label for="linkType" class="control-label">友链类型:</label>
-                                    <select class="form-control" id="linkType" name="linkType">
-                                        <option selected="selected" value="0">友链</option>
-                                        <option value="1">推荐网站</option>
-                                        <option value="2">个人链接</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="linkName" class="control-label">网站名称:</label>
-                                    <input type="text" class="form-control" id="linkName" name="linkName"
-                                           placeholder="请输入网站名称" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="linkUrl" class="control-label">网站链接:</label>
-                                    <input type="url" class="form-control" id="linkUrl" name="linkUrl"
-                                           placeholder="请输入网站链接" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="linkDescription" class="control-label">网站描述:</label>
-                                    <input type="url" class="form-control" id="linkDescription" name="linkDescription"
-                                           placeholder="请输入网站描述" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="linkRank" class="control-label">排序值:</label>
-                                    <input type="number" class="form-control" id="linkRank" name="linkRank"
-                                           placeholder="请输入排序值" required="true">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" id="saveButton">确认</button>
-                        </div>
-                    </div>
-                </div>
+<html xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/my.css">
+    <title>后台管理</title>
+</head>
+<body>
+<div id="app">
+    <el-container style="height: 60px;">
+        <!--LOGO-->
+        <el-image style="width: 200px; height: 60px;" src="/img/logo.jpg"></el-image>
+        <!--状态栏-->
+        <el-main style="background-color: #ffcccc">
+
+
+            哈哈哈哈哈哈欢迎👏
+
+            <el-link style="float: right" href="https://element.eleme.io" target="_blank" :underline="false">
+                <i class="el-icon-s-promotion"></i>博客首页
+            </el-link>
+
+            <el-dropdown style="float: right;">
+                <span class="el-dropdown-link" style="margin-right: 30px;"><i class="el-icon-s-custom"
+                                                                              style="margin-right: 10px;"></i>鼎</span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item disabled>昵称：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;鼎</el-dropdown-item>
+                    <el-dropdown-item disabled>账号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MonsterXu</el-dropdown-item>
+                    <el-dropdown-item disabled>上次登录：&nbsp;&nbsp;&nbsp;2020-07-19 17:00:29</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-main>
+    </el-container>
+
+    <!--中间-->
+    <el-container style="height: 765px; border: 1px solid #eee;">
+        <!--导航栏-->
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <el-menu
+                    :default-openeds="['1','2','3']"
+                    class="links">
+                <!--分类标题-->
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-stopwatch"></i>仪表盘</template>
+                    <el-menu-item-group>
+                        <a href="/admin">
+                            <el-menu-item index="1-1"><i class="el-icon-stopwatch"></i>仪表盘</el-menu-item>
+                        </a>
+                        <a href="/admin/blog/showAddBlog">
+                            <el-menu-item index="1-2"><i class="el-icon-edit-outline"></i>发布博客</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+
+                <el-submenu index="2">
+                    <template slot="title"><i class="el-icon-menu"></i>管理模块</template>
+                    <el-menu-item-group>
+                        <a href="/admin/blog">
+                            <el-menu-item index="2-1"><i class="el-icon-notebook-1"></i>博客管理</el-menu-item>
+                        </a>
+                        <a href="/admin/comment">
+                            <el-menu-item index="2-2"><i class="el-icon-chat-line-round"></i>评论管理</el-menu-item>
+                        </a>
+                        <a href="/admin/category">
+                            <el-menu-item index="2-3"><i class="el-icon-collection-tag"></i>分类管理</el-menu-item>
+                        </a>
+                        <a href="/admin/tags">
+                            <el-menu-item index="2-4"><i class="el-icon-price-tag"></i>标签管理</el-menu-item>
+                        </a>
+                        <a href="/admin/link">
+                            <el-menu-item index="2-5"><i class="el-icon-link"></i>友情链接</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+
+                <el-submenu index="3">
+                    <template slot="title"><i class="el-icon-s-tools"></i>系统管理</template>
+                    <el-menu-item-group>
+                        <a href="/admin/system">
+                            <el-menu-item index="3-1"><i class="el-icon-setting"></i>系统配置</el-menu-item>
+                        </a>
+                        <a href="/admin/user">
+                            <el-menu-item index="3-2"><i class="el-icon-user"></i>修改密码</el-menu-item>
+                        </a>
+                        <a href="/admin/exit">
+                            <el-menu-item index="3-3"><i class="el-icon-switch-button"></i>安全退出</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+
+        <el-container>
+            <el-header
+                    style="width: 100%; background-color: #ffd6d6; height: 40px; line-height: 40px; font-size: 16px;">
+                <b>后台管理中心</b>
+            </el-header>
+
+            <!--内容展示-->
+            <div>
+                <el-main>
+                    <template>
+                        <el-button size="small" type="primary" round @click="addLink()">添加链接</el-button>
+                    </template>
+
+                    <template>
+                        <el-table style=" width: 100%" :data="links">
+
+                            <el-table-column prop="linkId" label="序号" width="80">
+                            </el-table-column>
+
+                            <el-table-column prop="linkName" label="网站名称" width="180">
+                            </el-table-column>
+
+                            <el-table-column prop="linkUrl" label="网站链接" width="180">
+                            </el-table-column>
+
+                            <el-table-column prop="linkDescription" label="网站描述" width="180">
+                            </el-table-column>
+
+                            <el-table-column prop="linkType" label="有链类别" width="180">
+                            </el-table-column>
+
+                            <el-table-column prop="createTime" label="添加时间" width="180">
+                            </el-table-column>
+
+                            <el-table-column prop="isDeleted" label="操作">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" @click="editLink(scope.row)">编辑
+                                    </el-button>
+
+                                    <el-button size="mini" type="danger" @click="deleteLink(scope.row)">删除
+                                    </el-button>
+
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-main>
             </div>
-            <!-- /.modal -->
-        </div>
+
+            <!--分页条，一页显示11个最好-->
+            <div align="center">
+                <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        @current-change="handleCurrentChange"
+                        :total="pagination.total"
+                        :page-size="pagination.pageSize"
+                        :current-page.sync="pagination.currentPage">
+                </el-pagination>
+            </div>
+        </el-container>
+    </el-container>
+    <!--底部-->
+    <el-container>
+        <el-footer style="height:25px; line-height: 25px; text-align: center; font-size: 9px;">
+            Copyright © 2020 MonsterXU All rights reserved. <i>京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号
+            京网文[2020]0276-042号</i>
+        </el-footer>
+    </el-container>
+
+
+    <!--表单弹窗-->
+    <div class="add-form">
+        <el-dialog title="新建友情链接" :visible.sync="addFormVisible">
+            <template>
+
+                <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+                         class="demo-ruleForm">
+
+                    <el-form-item label="链接类型" prop="linkType">
+                        <el-select v-model="ruleForm.linkType" placeholder="请选择链接类型">
+                            <el-option label="友情链接" value="0"></el-option>
+                            <el-option label="推荐网站" value="1"></el-option>
+                            <el-option label="个人网站" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="网站名称" prop="linkName">
+                        <el-input type="text" v-model="ruleForm.linkName" placeholder="请输入网站名称" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="网站链接" prop="linkUrl">
+                        <el-input type="text" v-model="ruleForm.linkUrl" placeholder="请输入网站链接" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="网站描述" prop="linkDescription">
+                        <el-input type="text" v-model="ruleForm.linkDescription" placeholder="请输入网站描述" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="排序值" prop="linkRank">
+                        <el-input type="number" v-model.number="ruleForm.linkRank" placeholder="请输入排序值" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="addSubmitForm('ruleForm')">提交</el-button>
+                        <el-button @click="resetAddForm('ruleForm')">取消</el-button>
+                    </el-form-item>
+                </el-form>
+            </template>
+        </el-dialog>
     </div>
-    <!-- /.content-wrapper -->
-    <!-- 引入页脚footer-fragment -->
-    <div th:replace="admin/footer::footer-fragment"></div>
+
+    <!--表单修改弹窗-->
+    <div class="add-form">
+        <el-dialog title="修改友情链接" :visible.sync="editFormVisible">
+            <template>
+
+                <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+                         class="demo-ruleForm">
+
+                    <el-form-item label="链接类型" prop="linkType">
+                        <el-select v-model="ruleForm.linkType" placeholder="请选择链接类型">
+                            <el-option label="友情链接" value="0"></el-option>
+                            <el-option label="推荐网站" value="1"></el-option>
+                            <el-option label="个人网站" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="网站名称" prop="linkName">
+                        <el-input type="text" v-model="ruleForm.linkName" placeholder="请输入网站名称" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="网站链接" prop="linkUrl">
+                        <el-input type="text" v-model="ruleForm.linkUrl" placeholder="请输入网站链接" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="网站描述" prop="linkDescription">
+                        <el-input type="text" v-model="ruleForm.linkDescription" placeholder="请输入网站描述" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="排序值" prop="linkRank">
+                        <el-input type="number" v-model.number="ruleForm.linkRank" placeholder="请输入排序值" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="editSubmitForm('ruleForm')">提交</el-button>
+                        <el-button @click="resetEditForm('ruleForm')">取消</el-button>
+                    </el-form-item>
+                </el-form>
+            </template>
+        </el-dialog>
+    </div>
+
+
+
 </div>
-<!-- jQuery -->
-<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
-<!-- Bootstrap 4 -->
-<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<!-- AdminLTE App -->
-<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
-<script th:src="@{/admin/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>
-<script th:src="@{/admin/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>
-<!-- sweetalert -->
-<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
-<script th:src="@{/admin/dist/js/public.js}"></script>
-<script th:src="@{/admin/dist/js/link.js}"></script>
 </body>
+<!-- import Vue and Element -->
+<script src="/js/vue.js"></script>
+<script src="/js/ElementUI-index.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/axios.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            links = [[${links}]];
+            console.log(links);
+            //控制新增链接表单开关
+            addFormVisible = false;
+            editFormVisible = false;
+            //分页相关属性
+            pagination = {
+                currentPage: 1,
+                pageSize: 8,
+                total: 0,
+            };
+            //新增表单数据
+            ruleForm = {
+                linkType: '',
+                linkName: '',
+                linkUrl: '',
+                linkDescription: '',
+                linkRank: ''
+            };
+            //表单校验
+            var checkLinkRank = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('排序值不能为空'));
+                }
+                setTimeout(() => {
+                        if (!Number.isInteger(value)) {
+                            callback(new Error('请输入数字值'));
+                        } else {
+                            callback();
+                        }
+                    }, 1000
+                );
+            };
+            var checkLinkName = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入链接名称'));
+                } else {
+                    if (this.ruleForm.checkLinkName !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+            var checkLinkUrl = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入链接地址'));
+                } else {
+                    if (this.ruleForm.checkLinkUrl !== '') {
+                        this.$refs.ruleForm.validateField('checkPass1');
+                    }
+                    callback();
+                }
+            };
+            var checkLinkDescription = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入链接描述'));
+                } else {
+                    if (this.ruleForm.checkLinkDescription !== '') {
+                        this.$refs.ruleForm.validateField('checkPass1');
+                    }
+                    callback();
+                }
+            };
+
+            //链接的id
+            link = '';
+            return {
+                links,
+                pagination,
+                addFormVisible,
+                editFormVisible,
+                //新增表单数据
+                ruleForm: {
+                    linkType: '',
+                    linkName: '',
+                    linkUrl: '',
+                    linkDescription: '',
+                    linkRank: ''
+                },
+                //新增表单数据
+                editForm: {
+                    linkType: '',
+                    linkName: '',
+                    linkUrl: '',
+                    linkDescription: '',
+                    linkRank: ''
+                },
+                //新增表单数据
+                linkForm: {
+                    linkType: '',
+                    linkName: '',
+                    linkUrl: '',
+                    linkDescription: '',
+                    linkRank: ''
+                },
+                rules: {
+                    linkName: [
+                        {validator: checkLinkName, trigger: 'blur'}
+                    ],
+                    linkUrl: [
+                        {validator: checkLinkUrl, trigger: 'blur'}
+                    ],
+                    linkDescription: [
+                        {validator: checkLinkDescription, trigger: 'blur'}
+                    ],
+                    linkRank: [
+                        {validator: checkLinkRank, trigger: 'blur'}
+                    ]
+                }
+            };
+        },
+        //钩子函数
+        created() {
+            this.findPage();
+        }
+        ,
+        methods: {
+            // 重置表单
+            resetAddForm(formName){
+                this.addFormVisible = false;
+                if (this.$refs[formName] !== undefined) {
+                    this.$refs[formName].resetFields();
+                }
+            },
+            // 重置修改表单
+            resetEditForm(formName) {
+                this.editFormVisible = false;
+                if (this.$refs[formName] !== undefined) {
+                    this.$refs[formName].resetFields();
+                }
+            },
+            // 弹出添加角色窗口
+            handleCreate() {
+                this.resetEditForm();
+                this.resetAddForm();
+                this.addFormVisible = true;
+            },
+            // 弹出修改角色窗口
+            handleEdit() {
+                this.resetAddForm();
+                this.resetEditForm();
+                this.editFormVisible = true;
+            },
+            //打开添加标签弹窗
+            addLink() {
+                //打开弹窗层
+                this.handleCreate();
+                console.log("add")
+            },
+            //打开修改标签弹窗
+            editLink(link) {
+                this.ruleForm = link;
+                console.log(link);
+                console.log( this.ruleForm);
+                //打开弹窗层
+                this.handleEdit();
+                console.log("add")
+            },
+            //提交表单
+            addSubmitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        console.log(this.ruleForm);
+                        axios.post('/admin/link/add',this.ruleForm).then(res =>{
+                            if (res.data.flag){
+                                this.$message({
+                                    type: 'success',
+                                    message: '添加链接成功'
+                                });
+                                this.addFormVisible = false;
+                                this.resetForm(this.ruleForm);
+                                this.findPage();
+                            }
+                        }).catch(err =>{
+                            this.$message({
+                                type: 'error',
+                                message: '添加链接失败'
+                            });
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            //修改表单
+            editSubmitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        console.log(this.ruleForm);
+                        console.log("哈哈哈哈哈哈哈哈哈");
+                        axios.post('/admin/link/update',this.ruleForm).then(res =>{
+                            if (res.data.flag){
+                                this.$message({
+                                    type: 'success',
+                                    message: '修改链接成功'
+                                });
+                                this.editFormVisible = false;
+                                this.resetEditForm(this.ruleForm);
+                                this.findPage();
+                            }
+                        }).catch(err =>{
+                            this.$message({
+                                type: 'error',
+                                message: '修改链接失败'
+                            });
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            //删除标签
+            deleteLink(formName) {
+                this.$confirm('是否删除该标签?', '删除标签', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'danger'
+                }).then(() => {
+                    //发送请求删除标签
+                    axios.delete("/admin/link/delete/" + formName.linkId).then((res) => {
+
+                        if (res.data.flag) {
+                            //删除成功
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功'
+                            });
+                            this.findPage();
+                        }
+
+                    }).catch((err) => {
+                        console.log("删除标签失败： " + err);
+                        //删除失败
+                        this.$message({
+                            type: 'error',
+                            message: '删除失败'
+                        });
+                    });
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });
+                });
+            },
+            //分页查询
+            findPage() {
+                //封装分页参数
+                var currentPage = this.pagination.currentPage - 1;
+                var pageSize = this.pagination.pageSize;
+
+                console.log("currentPage:" + currentPage + "---------- currentPage" + currentPage);
+
+                //发送ajax请求，提交分页相关参数
+                axios.get("/admin/link/findPage/" + currentPage + "/" + pageSize).then((res) => {
+
+                    // console.log(res);
+
+                    //为VUE对象的模型数据赋值，基于双向数据绑定展示到页面
+                    this.links = res.data.rows;//当前页展示的数据集合
+                    this.pagination.total = res.data.total;//总数据量
+                });
+            },
+            //切换页码
+            handleCurrentChange(val) {
+                console.log(val);
+                //为模型数据赋值（当前页面）
+                this.pagination.currentPage = val;
+                this.findPage();
+            }
+        }
+    });
+</script>
+
 </html>

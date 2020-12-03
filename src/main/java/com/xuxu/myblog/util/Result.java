@@ -9,6 +9,7 @@ import java.io.Serializable;
  *****/
 public class Result<T> implements Serializable {
 
+    private Boolean flag; //返回状态
     private int resultCode; //返回状态码
     private String messages;    //返回的信息
     private T data; //返回的数据
@@ -16,15 +17,25 @@ public class Result<T> implements Serializable {
     public Result() {
     }
 
-    public Result(int resultCode, String messages) {
+    public Result(Boolean flag, int resultCode, String messages) {
+        this.flag = flag;
         this.resultCode = resultCode;
         this.messages = messages;
     }
 
-    public Result(int resultCode, String messages, T data) {
+    public Result(Boolean flag, int resultCode, String messages, T data) {
+        this.flag = flag;
         this.resultCode = resultCode;
         this.messages = messages;
         this.data = data;
+    }
+
+    public Boolean getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Boolean flag) {
+        this.flag = flag;
     }
 
     public int getResultCode() {
@@ -54,7 +65,8 @@ public class Result<T> implements Serializable {
     @Override
     public String toString() {
         return "Result{" +
-                "resultCode=" + resultCode +
+                "flag=" + flag +
+                ", resultCode=" + resultCode +
                 ", messages='" + messages + '\'' +
                 ", data=" + data +
                 '}';

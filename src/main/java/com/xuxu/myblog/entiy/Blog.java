@@ -2,6 +2,7 @@ package com.xuxu.myblog.entiy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
 import java.util.Date;
 
 
@@ -10,36 +11,55 @@ import java.util.Date;
  * @author MonsterXu
  * @date 2020-07-17
  */
+@Entity
+@Table(name = "tb_blog")
 public class Blog {
 
+    @Id    //主键id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)//主键生成策略
+    @Column(name="blog_id")//数据库字段名
     private Long blogId;        //博客id
 
+    @Column(name="blog_title")
     private String blogTitle;   //博客标题
 
+    @Column(name="blog_sub_url")
     private String blogSubUrl;  //博客自定义路径
 
+    @Column(name="blog_cover_image")
     private String blogCoverImage;  //文章封面图
 
+    @Column(name="blog_category_id")
     private Integer blogCategoryId; //博客分类id
 
+    @Column(name="blog_category_name")
     private String blogCategoryName;    //博客分类名称
 
+    @Column(name="blog_tags")
     private String blogTags;    //博客标签
 
+    @Column(name="blog_status")
     private Byte blogStatus;    //博客状态 默认0草稿，1发布
 
+    @Column(name="blog_views")
     private Long blogViews;     //阅读量
 
+    @Column(name="enable_comment")
     private Byte enableComment;     //是否允许评论 默认0 允许，1不允许
 
+    @Column(name="is_deleted")
     private Byte isDeleted;     //是否删除，默认0=否，1=是
 
+    @Column(name="create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;    //添加时间
 
+    @Column(name="update_time")
     private Date updateTime;    //修改时间
 
+    @Column(name="blog_content")
     private String blogContent; //博客内容
+
 
     public Long getBlogId() {
         return blogId;

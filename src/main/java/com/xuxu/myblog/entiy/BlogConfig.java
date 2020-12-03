@@ -1,5 +1,6 @@
 package com.xuxu.myblog.entiy;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -7,13 +8,23 @@ import java.util.Date;
  * @author MonsterXu
  * @date 2020-07-17
  */
+
+@Entity
+@Table(name = "tb_config")
 public class BlogConfig {
+
+    @Id    //主键id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)//主键生成策略
+    @Column(name="config_name")//数据库字段名
     private String configName;      //配置项名称
 
+    @Column(name="config_value")
     private String configValue;     //配置项的值
 
+    @Column(name="create_time")
     private Date createTime;        //创建时间
 
+    @Column(name="update_time")
     private Date updateTime;        //修改时间
 
     public String getConfigName() {

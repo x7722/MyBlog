@@ -2,6 +2,7 @@ package com.xuxu.myblog.entiy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -9,21 +10,34 @@ import java.util.Date;
  * @author MonsterXu
  * @date 2020-07-17
  */
+@Entity
+@Table(name = "tb_link")
 public class BlogLink {
+
+    @Id    //主键id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)//主键生成策略
+    @Column(name="link_id")//数据库字段名
     private Integer linkId; //友链表主键id
 
+    @Column(name="link_type")
     private Byte linkType;  //友链类别 默认0， 0-友链 1-推荐 2-个人网站
 
+    @Column(name="link_name")
     private String linkName;    //网站名称
 
+    @Column(name="link_url")
     private String linkUrl;     //网站链接
 
+    @Column(name="link_description")
     private String linkDescription;     //网站描述
 
+    @Column(name="link_rank")
     private Integer linkRank;       //用于列表排序 默认0
 
+    @Column(name="is_deleted")
     private Byte isDeleted;     //是否删除 默认0  0-未删除 1-已删除
 
+    @Column(name="create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;        //添加时间
 

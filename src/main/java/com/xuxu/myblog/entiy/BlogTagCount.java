@@ -1,5 +1,8 @@
 package com.xuxu.myblog.entiy;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * 博客标签Count
  * @author MonsterXu

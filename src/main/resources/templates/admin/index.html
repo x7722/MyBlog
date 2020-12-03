@@ -1,138 +1,278 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<header th:replace="admin/header::header-fragment"></header>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
-    <!-- 引入页面头header-fragment -->
-    <div th:replace="admin/header::header-nav"></div>
-    <!-- 引入工具栏sidebar-fragment -->
-    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- Main content -->
-        <div class="content">
-            <div class="container-fluid">
-                <div class="card-header">
-                    <h3 class="card-title">管理首页</h3>
-                </div> <!-- /.card-body -->
-                <div class="row" style="margin-top: 40px;border-top:0px;">
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>新增博客</h3>
+<html xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/my.css">
+    <title>后台管理</title>
 
-                                <p>记心中所想</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-pencil-square-o"></i>
-                            </div>
-                            <a th:href="@{/admin/blogs/edit}" class="small-box-footer">let's go <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3 th:text="${blogCount}">65</h3>
+</head>
+<body>
+<div id="app">
+    <el-container style="height: 60px;">
+        <!--LOGO-->
+        <el-image style="width: 200px; height: 60px;" src="/img/logo.jpg"></el-image>
+        <!--状态栏-->
+        <el-main style="background-color: #ffcccc">
 
-                                <p>总文章数</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-list-alt"></i>
-                            </div>
-                            <a th:href="@{/admin/blogs}" class="small-box-footer">More info <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-primary">
-                            <div class="inner">
-                                <h3 th:text="${commentCount}">65</h3>
 
-                                <p>收到评论数</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-comments"></i>
-                            </div>
-                            <a th:href="@{/admin/comments}" class="small-box-footer">More info <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3 th:text="${categoryCount}">65</h3>
+            欢迎👏欢迎👏欢迎👏热烈欢迎
 
-                                <p>分类数量</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-bookmark"></i>
-                            </div>
-                            <a th:href="@{/admin/categories}" class="small-box-footer">More info <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3 th:text="${tagCount}">65</h3>
+            <el-link style="float: right" href="https://element.eleme.io" target="_blank" :underline="false">
+                <i class="el-icon-s-promotion"></i>博客首页
+            </el-link>
 
-                                <p>标签总量</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-tags"></i>
-                            </div>
-                            <a th:href="@{/admin/tags}" class="small-box-footer">More info <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-dark">
-                            <div class="inner">
-                                <h3 th:text="${linkCount}">65</h3>
+            <el-dropdown style="float: right;">
+                <span class="el-dropdown-link" style="margin-right: 30px;"><i class="el-icon-s-custom"
+                                                                              style="margin-right: 10px;"></i>鼎</span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item disabled>昵称：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;鼎</el-dropdown-item>
+                    <el-dropdown-item disabled>账号：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MonsterXu</el-dropdown-item>
+                    <el-dropdown-item disabled>上次登录：&nbsp;&nbsp;&nbsp;2020-07-19 17:00:29</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-main>
+    </el-container>
 
-                                <p>友情链接</p>
+    <!--中间-->
+    <el-container style="height: 765px; border: 1px solid #eee;  background-color: rgb(241,244,248)">
+        <!--导航栏-->
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <el-menu
+                    :default-openeds="['1','2','3']"
+                    class="links">
+                <!--分类标题-->
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-stopwatch"></i>仪表盘</template>
+                    <el-menu-item-group>
+                        <a href="/admin">
+                            <el-menu-item index="1-1"><i class="el-icon-stopwatch"></i>仪表盘</el-menu-item>
+                        </a>
+                        <a href="/admin/blog/showAddBlog">
+                            <el-menu-item index="1-2"><i class="el-icon-edit-outline"></i>发布博客</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+
+                <el-submenu index="2">
+                    <template slot="title"><i class="el-icon-menu"></i>管理模块</template>
+                    <el-menu-item-group>
+                        <a href="/admin/blog">
+                            <el-menu-item index="2-1"><i class="el-icon-notebook-1"></i>博客管理</el-menu-item>
+                        </a>
+                        <a href="/admin/comment">
+                            <el-menu-item index="2-2"><i class="el-icon-chat-line-round"></i>评论管理</el-menu-item>
+                        </a>
+                        <a href="/admin/category">
+                            <el-menu-item index="2-3"><i class="el-icon-collection-tag"></i>分类管理</el-menu-item>
+                        </a>
+                        <a href="/admin/tags">
+                            <el-menu-item index="2-4"><i class="el-icon-price-tag"></i>标签管理</el-menu-item>
+                        </a>
+                        <a href="/admin/link">
+                            <el-menu-item index="2-5"><i class="el-icon-link"></i>友情链接</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+
+                <el-submenu index="3">
+                    <template slot="title"><i class="el-icon-s-tools"></i>系统管理</template>
+                    <el-menu-item-group>
+                        <a href="/admin/system">
+                            <el-menu-item index="3-1"><i class="el-icon-setting"></i>系统配置</el-menu-item>
+                        </a>
+                        <a href="/admin/user">
+                            <el-menu-item index="3-2"><i class="el-icon-user"></i>修改密码</el-menu-item>
+                        </a>
+                        <a th:href="@{/logout}">
+                            <el-menu-item index="3-3"><i class="el-icon-switch-button"></i>安全退出</el-menu-item>
+                        </a>
+                    </el-menu-item-group>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+
+        <el-container>
+            <el-header
+                    style="width: 100%; height: 40px; line-height: 40px; font-size: 16px;">
+                <b>后台管理中心</b>
+            </el-header>
+
+            <!--内容展示-->
+            <div style="margin: 15px 10px 5px 15px;">
+
+                <el-row style="padding: 0px">
+                    <el-col :span="8" class="box-card">
+                        <el-card :body-style="{ padding: '0px' }">
+                            <div style="height: 130px;background-color: rgb(25,147,169);">
+                                <div class="title-div">新增博客</div>
+                                <br>
+                                <div class="title-text-div">记录心中所想</div>
                             </div>
-                            <div class="icon">
-                                <i class="fa fa-heart"></i>
+                            <div class="div-a" style="background-color: rgb(22,128,159)" onclick="window.open('/admin/blog/showAddBlog','_self')">
+                                let's go <a class="el-icon-lollipop"></a>
                             </div>
-                            <a th:href="@{/admin/links}" class="small-box-footer">More info <i
-                                    class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                </div>
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-    <!-- 引入页脚footer-fragment -->
-    <div th:replace="admin/footer::footer-fragment"></div>
+                        </el-card>
+                    </el-col>
+
+                    <el-col :span="8" class="box-card">
+                        <el-card :body-style="{ padding: '0px' }">
+                            <div style="height: 130px;background-color: rgb(37,155,53);">
+                                <div class="title-div">{{pageData.blogCount}}</div>
+                                <br>
+                                <div class="title-text-div">文章总数</div>
+                            </div>
+                            <div class="div-a" style="background-color: rgb(34,136,48)" onclick="window.open('/admin/blog','_self')">
+                                More info <a class="el-icon-lollipop"></a>
+                            </div>
+                        </el-card>
+                    </el-col>
+
+
+                    <el-col :span="8" class="box-card">
+                        <el-card :body-style="{ padding: '0px' }">
+                            <div style="height: 130px;background-color: rgb(12,97,254);">
+                                <div class="title-div">{{pageData.commentCount}}</div>
+                                <br>
+                                <div class="title-text-div">收到的评论数</div>
+                            </div>
+                            <div class="div-a" style="background-color: rgb(12,85,222)" onclick="window.open('/admin/comment','_self')">
+                                More info <a class="el-icon-lollipop"></a>
+                            </div>
+                        </el-card>
+                    </el-col>
+
+
+                    <el-col :span="8" class="box-card-1">
+                        <el-card :body-style="{ padding: '0px' }">
+                            <div style="height: 130px;background-color: rgb(255,181,13);">
+                                <div class="title-div">{{pageData.categoryCount}}</div>
+                                <br>
+                                <div class="title-text-div">分类数量</div>
+                            </div>
+                            <div class="div-a" style="background-color: rgb(223,158,14)" onclick="window.open('/admin/category','_self')">
+                                More info <a class="el-icon-lollipop"></a>
+                            </div>
+                        </el-card>
+                    </el-col>
+
+
+                    <el-col :span="8" class="box-card-1" >
+                        <el-card :body-style="{ padding: '0px' }">
+                            <div style="height: 130px;background-color: rgb(210,29,53);">
+                                <div class="title-div">{{pageData.tagCount}}</div>
+                                <br>
+                                <div class="title-text-div">标签总量</div>
+                            </div>
+                            <div class="div-a" style="background-color: rgb(183,27,47)" onclick="window.open('/admin/tags','_self')">
+                                More info <a class="el-icon-lollipop"></a>
+                            </div>
+                        </el-card>
+                    </el-col>
+
+                    <el-col :span="8" class="box-card-1" >
+                        <el-card :body-style="{ padding: '0px' }">
+                            <div style="height: 130px;background-color: rgb(39,44,49);">
+                                <div class="title-div">{{pageData.linkCount}}</div>
+                                <br>
+                                <div class="title-text-div">友情链接</div>
+                            </div>
+                            <div class="div-a" style="background-color: rgb(36,39,44)" onclick="window.open('/admin/link','_self')">
+                                More info <a class="el-icon-lollipop"></a>
+                            </div>
+                        </el-card>
+                    </el-col>
+
+
+                </el-row>
+
+
+            </div>
+
+
+        </el-container>
+
+
+    </el-container>
+    <!--底部-->
+    <el-container>
+        <el-footer style="height:25px; line-height: 25px; text-align: center; font-size: 9px;">
+            Copyright © 2020 MonsterXU All rights reserved. <i>京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号
+            京网文[2020]0276-042号</i>
+        </el-footer>
+    </el-container>
 </div>
-<!-- jQuery -->
-<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
-<!-- Bootstrap 4 -->
-<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<!-- AdminLTE App -->
-<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
 </body>
+<!-- import Vue and Element -->
+<script src="/js/vue.js"></script>
+<script src="/js/ElementUI-index.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/axios.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data() {
+
+            pageData={};
+            return {
+                pageData
+            };
+        },
+        //钩子函数
+        created() {
+            // 发送请求查询页面上需要的数据
+            axios.get('/admin/pageData').then(res => {
+
+                if (res.data.flag){
+                    this.pageData = res.data.data;
+                    console.log(pageData);
+                    console.log(res);
+                }
+
+            }).catch(err =>{
+                console.log("查询首页数据失败，请检查网络连接。")
+            });
+        }
+    });
+</script>
+
+<style>
+    .box-card {
+        width: 370px;
+        height: 260px;
+        margin: 20px 10px 0 10px;
+    }
+
+    .box-card-1 {
+        width: 370px;
+        height: 260px;
+        margin: 10px 10px 0 10px;
+    }
+
+    .title-div {
+        width: 100%;
+        color: white;
+        font-size: 38px;
+        float: left;
+        margin: 10px;
+        /*line-height: 30px;*/
+    }
+
+    .title-text-div {
+        width: 100%;
+        color: white;
+        font-size: 15px;
+        margin: 10px;
+        float: left;
+    }
+
+    .div-a {
+        cursor:pointer;
+        padding: 7px;
+        text-align: center;
+        color: white;
+    }
+</style>
+
+
 </html>

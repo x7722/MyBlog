@@ -1,5 +1,6 @@
 package com.xuxu.myblog.entiy;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -7,13 +8,23 @@ import java.util.Date;
  * @author MonsterXu
  * @date 2020-07-17
  */
+
+@Entity
+@Table(name = "tb_blog_tag_relation")
 public class BlogTagRelation {
+
+    @Id    //主键id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)//主键生成策略
+    @Column(name="relation_id")//数据库字段名
     private Long relationId;    //关系id
 
+    @Column(name="blog_id")
     private Long blogId;    //博客id
 
+    @Column(name="tag_id")
     private Integer tagId;  //标签id
 
+    @Column(name="create_time")
     private Date createTime;    //创建时间
 
     public Long getRelationId() {

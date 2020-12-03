@@ -2,6 +2,7 @@ package com.xuxu.myblog.entiy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -9,31 +10,47 @@ import java.util.Date;
  * @author MonsterXu
  * @date 2020-07-17
  */
+@Entity
+@Table(name = "tb_blog_comment")
 public class BlogComment {
+    @Id    //主键id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)//主键生成策略
+    @Column(name="comment_id")//数据库字段名
     private Long commentId; //评论主键id
 
+    @Column(name="blog_id")
     private Long blogId;    //关联的博客主键id
 
+    @Column(name="commentator")
     private String commentator; //评论者的名称
 
+    @Column(name="email")
     private String email;   //评论人的邮箱
 
+    @Column(name="website_url")
     private String websiteUrl;  //网址
 
+    @Column(name="comment_body")
     private String commentBody; //评论内容
 
+    @Column(name="comment_create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date commentCreateTime;     //评论提交的时间
 
+    @Column(name="commentator_ip")
     private String commentatorIp;   //评论人的IP地址
 
+    @Column(name="reply_body")
     private String replyBody;       //回复内容
 
+    @Column(name="reply_create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date replyCreateTime;   //回复时间
 
+    @Column(name="comment_status")
     private Byte commentStatus;     //评论是否通过审核，默认0未审核，1审核通过
 
+    @Column(name="is_deleted")
     private Byte isDeleted;     //评论是否删除，默认0未删除，1删除
 
     public Long getCommentId() {

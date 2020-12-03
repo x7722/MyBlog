@@ -2,6 +2,7 @@ package com.xuxu.myblog.entiy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -10,19 +11,32 @@ import java.util.Date;
  * @date 2020-07-17
  */
 
+@Entity
+@Table(name = "tb_blog_category")
 public class BlogCategory {
+
+    @Id    //主键id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)//主键生成策略
+    @Column(name="category_id")//数据库字段名
     private Integer categoryId;     //分类id
 
+    @Column(name="category_name")
     private String categoryName;    //分类名称
 
+    @Column(name="category_icon")
     private String categoryIcon;    //分类图标
 
+    @Column(name="category_rank")
     private Integer categoryRank;   //分类排序值 默认1，被使用的越多，数值越大，排序越靠前
 
+    @Column(name="is_deleted")
     private Byte isDeleted;     //是否删除 默认0， 0否 1是
 
+    @Column(name="create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
+
+
 
     public Integer getCategoryId() {
         return categoryId;

@@ -97,7 +97,7 @@
         <el-container>
             <el-header
                     style="width: 100%; background-color: #ffd6d6; height: 40px; line-height: 40px; font-size: 16px;">
-                <b>编辑文章</b>
+                <b>新增文章</b>
             </el-header>
 
             <!--内容展示-->
@@ -156,20 +156,9 @@
         el: '#app',
         data() {
             blogs = {
-                blogId: [[${blogs.blogId}]],
-                // blogSubUrl: [[${blogs.blogSubUrl}]],
-                // blogCoverImage: [[${blogs.blogCoverImage}]],
-                // blogCategoryId: [[${blogs.blogCategoryId}]],
-                // blogStatus: [[${blogs.blogStatus}]],
-                // blogViews: [[${blogs.blogViews}]],
-                // enableComment: [[${blogs.enableComment}]],
-                // isDeleted: [[${blogs.isDeleted}]],
-                // createTime: [[${blogs.createTime}]],
-                // //blogContent: [[${blogs.blogContent}]],
-
-                blogTitle: [[${blogs.blogTitle}]],
-                blogTags: [[${blogs.blogTags}]],
-                blogCategoryName: [[${blogs.blogCategoryName}]]
+                blogTitle: '',
+                blogTags: '',
+                blogCategoryName: ''
             };
             // console.log(blogs);
 
@@ -202,29 +191,29 @@
                     console.log(blogs);
 
                     //发送请求，修改文章
-                    axios.post("/admin/blog/editBlog",blogs).then((res)=>{
+                    axios.post("/admin/blog/addBlog",blogs).then((res)=>{
 
                         if(res.data.flag){
                             this.$message({
                                 type: 'success',
-                                message: '修改成功!'
+                                message: '保存成功!'
                             });
                         }else {
                             this.$message({
                                 type: 'error',
-                                message: '修改失败!'
+                                message: '保存失败!'
                             });
                         }
                     }).catch(()=>{
                         this.$message({
                             type: 'error',
-                            message: '修改失败!'
+                            message: '保存失败!'
                         });
                     });
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '取消修改'
+                        message: '取消保存'
                     });
                 });
             }
@@ -234,6 +223,7 @@
 
 
 <script type="text/javascript">
+    var blogText = '';
     var testEditor;
 
     $(function() {
@@ -246,7 +236,7 @@
                 theme : "dark",
                 previewTheme : "dark",
                 editorTheme : "pastel-on-dark",
-                markdown : `[[${blogs.blogContent}]]`,
+                markdown : blogText,
                 codeFold : true,
                 //syncScrolling : false,
                 saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
