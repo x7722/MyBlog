@@ -109,7 +109,8 @@
                                 <br>
                                 <div class="title-text-div">记录心中所想</div>
                             </div>
-                            <div class="div-a" style="background-color: rgb(22,128,159)" onclick="window.open('/admin/blog/showAddBlog','_self')">
+                            <div class="div-a" style="background-color: rgb(22,128,159)"
+                                 onclick="window.open('/admin/blog/showAddBlog','_self')">
                                 let's go <a class="el-icon-lollipop"></a>
                             </div>
                         </el-card>
@@ -122,7 +123,8 @@
                                 <br>
                                 <div class="title-text-div">文章总数</div>
                             </div>
-                            <div class="div-a" style="background-color: rgb(34,136,48)" onclick="window.open('/admin/blog','_self')">
+                            <div class="div-a" style="background-color: rgb(34,136,48)"
+                                 onclick="window.open('/admin/blog','_self')">
                                 More info <a class="el-icon-lollipop"></a>
                             </div>
                         </el-card>
@@ -136,7 +138,8 @@
                                 <br>
                                 <div class="title-text-div">收到的评论数</div>
                             </div>
-                            <div class="div-a" style="background-color: rgb(12,85,222)" onclick="window.open('/admin/comment','_self')">
+                            <div class="div-a" style="background-color: rgb(12,85,222)"
+                                 onclick="window.open('/admin/comment','_self')">
                                 More info <a class="el-icon-lollipop"></a>
                             </div>
                         </el-card>
@@ -150,34 +153,37 @@
                                 <br>
                                 <div class="title-text-div">分类数量</div>
                             </div>
-                            <div class="div-a" style="background-color: rgb(223,158,14)" onclick="window.open('/admin/category','_self')">
+                            <div class="div-a" style="background-color: rgb(223,158,14)"
+                                 onclick="window.open('/admin/category','_self')">
                                 More info <a class="el-icon-lollipop"></a>
                             </div>
                         </el-card>
                     </el-col>
 
 
-                    <el-col :span="8" class="box-card-1" >
+                    <el-col :span="8" class="box-card-1">
                         <el-card :body-style="{ padding: '0px' }">
                             <div style="height: 130px;background-color: rgb(210,29,53);">
                                 <div class="title-div">{{pageData.tagCount}}</div>
                                 <br>
                                 <div class="title-text-div">标签总量</div>
                             </div>
-                            <div class="div-a" style="background-color: rgb(183,27,47)" onclick="window.open('/admin/tags','_self')">
+                            <div class="div-a" style="background-color: rgb(183,27,47)"
+                                 onclick="window.open('/admin/tags','_self')">
                                 More info <a class="el-icon-lollipop"></a>
                             </div>
                         </el-card>
                     </el-col>
 
-                    <el-col :span="8" class="box-card-1" >
+                    <el-col :span="8" class="box-card-1">
                         <el-card :body-style="{ padding: '0px' }">
                             <div style="height: 130px;background-color: rgb(39,44,49);">
                                 <div class="title-div">{{pageData.linkCount}}</div>
                                 <br>
                                 <div class="title-text-div">友情链接</div>
                             </div>
-                            <div class="div-a" style="background-color: rgb(36,39,44)" onclick="window.open('/admin/link','_self')">
+                            <div class="div-a" style="background-color: rgb(36,39,44)"
+                                 onclick="window.open('/admin/link','_self')">
                                 More info <a class="el-icon-lollipop"></a>
                             </div>
                         </el-card>
@@ -213,7 +219,7 @@
         el: '#app',
         data() {
 
-            pageData={};
+            pageData = {};
             return {
                 pageData
             };
@@ -223,13 +229,13 @@
             // 发送请求查询页面上需要的数据
             axios.get('/admin/pageData').then(res => {
 
-                if (res.data.flag){
+                if (res.data.flag) {
                     this.pageData = res.data.data;
                     console.log(pageData);
                     console.log(res);
                 }
 
-            }).catch(err =>{
+            }).catch(err => {
                 console.log("查询首页数据失败，请检查网络连接。")
             });
         }
@@ -267,7 +273,7 @@
     }
 
     .div-a {
-        cursor:pointer;
+        cursor: pointer;
         padding: 7px;
         text-align: center;
         color: white;

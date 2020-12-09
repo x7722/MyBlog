@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/my.css">
+</head>
+<body>
+<div id="app">
+
+    <div style=" width: 400px; height: 300px; float: right; margin: 250px 220px 0 0">
+        <form class="el-form--label-top" action="/login" method="post">
+
+            <el-input class="loginInput" placeholder="请输入账号" name="username" v-model="username" clearable></el-input>
+
+            <el-input class="loginInput" placeholder="请输入密码" name="password" v-model="password" show-password clearable></el-input>
+
+            <button class=" loginInput el-button el-button--primary" type="submit">登录</button>
+            <el-button type="info" @click="regist(username,password)">注册</el-button>
+        </form>
+
+
+    </div>
+</div>
+</body>
+
+<!-- import Vue and Element -->
+<script src="/js/vue.js"></script>
+<script src="/js/ElementUI-index.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/axios.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            fullNaem = "";
+            return {
+                username: '',
+                password: ''
+            }
+        },
+        //钩子函数
+        created() {
+        },
+        methods: {
+            //注册
+            regist(username, password) {
+                console.log("用户注册--> 用户名：" + username + "  -----  密码：" + password)
+            },
+        }
+    })
+</script>
+
+</html>

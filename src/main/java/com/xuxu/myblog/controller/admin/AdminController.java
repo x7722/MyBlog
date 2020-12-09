@@ -18,7 +18,6 @@ import java.util.HashMap;
  *  @date 2020/7/17
  *  AdminController
  *****/
-
 @Controller
 @RequestMapping("/admin")
 
@@ -40,6 +39,15 @@ public class AdminController {
         return "admin/index.html";
     }
 
+    /**
+     * 访问后台登录页面
+     * @return
+     */
+    @GetMapping("/adminLogin")
+    @ApiOperation(("后台用户登录"))
+    public String adminLoginPage(){
+        return "admin/admin_login.html";
+    }
 
     /**
      * 访问 博客编辑发布页面
