@@ -11,7 +11,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/my_blog_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=UTC
     username: root
-    password: Jamesr0712.
+    password: root
 
   main:
     allow-bean-definition-overriding: true #如果有相同的Bean，会覆盖
