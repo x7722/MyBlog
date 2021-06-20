@@ -20,7 +20,7 @@ public class BlogLink {
     private Integer linkId; //友链表主键id
 
     @Column(name="link_type")
-    private Byte linkType;  //友链类别 默认0， 0-友链 1-推荐 2-个人网站
+    private Integer linkType;  //友链类别 默认0， 0-友链 1-推荐 2-个人网站
 
     @Column(name="link_name")
     private String linkName;    //网站名称
@@ -35,7 +35,7 @@ public class BlogLink {
     private Integer linkRank;       //用于列表排序 默认0
 
     @Column(name="is_deleted")
-    private Byte isDeleted;     //是否删除 默认0  0-未删除 1-已删除
+    private Integer isDeleted;     //是否删除 默认0  0-未删除 1-已删除
 
     @Column(name="create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -49,11 +49,11 @@ public class BlogLink {
         this.linkId = linkId;
     }
 
-    public Byte getLinkType() {
+    public Integer getLinkType() {
         return linkType;
     }
 
-    public void setLinkType(Byte linkType) {
+    public void setLinkType(Integer linkType) {
         this.linkType = linkType;
     }
 
@@ -89,11 +89,11 @@ public class BlogLink {
         this.linkRank = linkRank;
     }
 
-    public Byte getIsDeleted() {
+    public Integer getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(Byte isDeleted) {
+    public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
     }
 

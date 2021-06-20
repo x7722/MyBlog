@@ -1,16 +1,54 @@
 package com.xuxu.my_blog;
 
+import com.xuxu.myblog.MyBlogApplication;
+import com.xuxu.myblog.controller.admin.LinkController;
+import com.xuxu.myblog.entiy.BlogLink;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-//@SpringBootTest
+/**
+ * SpringBoot 单元测试
+ *
+ */
+
+//固定写法
+@RunWith(SpringRunner.class)
+//固定写法，这里的classes要指定启动器的class文件
+@SpringBootTest(classes = MyBlogApplication.class)
 class SpringbootSecurityOauth2ApplicationTests {
+
+    /** 注入接口对象(接口指针？) */
+    @Autowired
+    private LinkController linkController;
+
+    @Test
+    void testLinkController(){
+        //创建友情链接对象，用于添加数据到数据库中
+        BlogLink blogLink = new BlogLink();
+        blogLink.setLinkName("淘宝网");
+        blogLink.setLinkUrl("www.taobao.com");
+        blogLink.setLinkDescription("剁手花钱月光族");
+        blogLink.setIsDeleted(0);
+        blogLink.setLinkRank(0);
+        blogLink.setLinkType(0);
+        //调用接口中的方法(函数)，测试添加友情链接的接口
+        linkController.add(blogLink);
+    }
+
+
+
+
+
 
     @Test
     void contextLoads() {

@@ -69,7 +69,7 @@ public class LinkServiceImpl implements LinkService {
      */
     @Override
     public boolean add(BlogLink blogLink) {
-        blogLink.setIsDeleted(new Byte("0"));
+        blogLink.setIsDeleted(0);
         blogLink.setCreateTime(new Date());
         linkDao.save(blogLink);
         return true;
